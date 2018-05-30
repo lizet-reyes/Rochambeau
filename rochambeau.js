@@ -41,9 +41,11 @@ function playGame(){
 var rockButton = document.getElementById("rock");
 var paperButton = document.getElementById("paper");
 var scissorsButton = document.getElementById("scissors");
+var playButton = document.getElementById("play");
 
 // Add the event handlers
 rockButton.addEventListener('click', () => {storePlayerChoice(0)});
 paperButton.addEventListener('click', () => {storePlayerChoice(1)});
 scissorsButton.addEventListener('click', () => {storePlayerChoice(2)});
+playButton.addEventListener('click', () => {playGame()});
 
