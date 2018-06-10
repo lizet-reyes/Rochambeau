@@ -134,3 +134,4 @@ spockButton.addEventListener('click', () => {
 playButton.addEventListener('click', () => {
     playGame()
 });
+
