@@ -1,211 +1,179 @@
-/**
- * Represents a player
- */
-function Player(){
+function Player() {
     this.choice = null;
 }
 
-var player = new Player();
-var computer = new Player();
+var Rochambeau = {
 
-/**
- * Represents the choices
- */
-var choices  = {
-    ROCK: 0,
-    PAPER: 1,
-    SCISSORS: 2,
-    LIZARD: 3,
-    SPOCK: 4
+    player: new Player(),
+    computer: new Player(),
+
+    rockButton: document.getElementById("rock"),
+    paperButton: document.getElementById("paper"),
+    scissorsButton: document.getElementById("scissors"),
+    lizardButton: document.getElementById("lizard"),
+    spockButton: document.getElementById("spock"),
+    playButton: document.getElementById("play"),
+
+    choices: {
+        ROCK: 0,
+        PAPER: 1,
+        SCISSORS: 2,
+        LIZARD: 3,
+        SPOCK: 4
+    },
+
+    choiceNames: {
+        0: "Rock",
+        1: "Paper",
+        2: "Scissors",
+        3: "Lizard",
+        4: "Spock"
+    },
+
+    score: {
+        wins: 0,
+        losses: 0,
+        ties: 0
+    },
+
+    matchScore: {
+        wins: 0,
+        losses: 0
+    },
+    results: {
+        WIN: 1,
+        TIE: 0,
+        LOSS: -1,
+    },
+
+    storePlayerChoice: function (choice) {
+        Rochambeau.player.choice = choice;
+        console.log("My choice =" + Rochambeau.player.choice);
+        Rochambeau.storeComputerChoice();
+    },
+
+    storeComputerChoice: function () {
+        Rochambeau.computer.choice = Math.floor(Math.random() * 5);
+        console.log("computer choice =" + Rochambeau.computer.choice);
+    },
+
+    playGame: function () {
+        if (Rochambeau.player.choice == Rochambeau.computer.choice) {
+            console.log("tie");
+
+            ++Rochambeau.score.ties;
+            Rochambeau.displayGameResult("tie");
+
+        } else if (Rochambeau.player.choice == Rochambeau.choices.ROCK && (Rochambeau.computer.choice == Rochambeau.choices.SCISSORS || Rochambeau.computer.choice == Rochambeau.choices.LIZARD)) {
+
+            console.log("win");
+            ++Rochambeau.score.wins;
+            Rochambeau.displayGameResult("win");
+
+        } else if (Rochambeau.player.choice == Rochambeau.choices.PAPER && (Rochambeau.computer.choice == Rochambeau.choices.ROCK || Rochambeau.computer.choice == Rochambeau.choices.SPOCK)) {
+
+            console.log("win");
+            ++Rochambeau.score.wins;
+            Rochambeau.displayGameResult("win");
+
+        } else if (Rochambeau.player.choice == Rochambeau.choices.SCISSORS && (Rochambeau.computer.choice == Rochambeau.choices.PAPER || Rochambeau.computer.choice == Rochambeau.choices.LIZARD)) {
+
+            console.log("win");
+            ++Rochambeau.score.wins;
+            Rochambeau.displayGameResult("win");
+
+        } else if (Rochambeau.player.choice == Rochambeau.choices.LIZARD && (Rochambeau.computer.choice == Rochambeau.choices.SPOCK || Rochambeau.computer.choice == Rochambeau.choices.PAPER)) {
+
+            console.log("win");
+            ++Rochambeau.score.wins;
+            Rochambeau.displayGameResult("win");
+
+        } else if (Rochambeau.player.choice == Rochambeau.choices.SPOCK && (Rochambeau.computer.choice == Rochambeau.choices.SCISSORS || Rochambeau.computer.choice == Rochambeau.choices.ROCK)) {
+
+            console.log("win");
+            ++Rochambeau.score.wins;
+            Rochambeau.displayGameResult("win");
+
+        } else {
+
+            console.log("lose");
+            ++Rochambeau.score.losses;
+            Rochambeau.displayGameResult("lose")
+        }
+    },
+    displayGameResult: function (result) {
+        if (Rochambeau.score.wins == 2) {
+            var messagetwo = "You won the match " + Rochambeau.score.wins + " - " + Rochambeau.score.losses + ".";
+        } else if (Rochambeau.score.losses == 2) {
+            var messagetwo = "You lost the match " + Rochambeau.score.wins + " - " + Rochambeau.score.losses + ".";
+        } else {
+            var messagetwo = "Your current best of three score is " + Rochambeau.score.wins + " - " + Rochambeau.score.losses + ".";
+        }
+        var message = "Your choice was " + Rochambeau.choiceNames[Rochambeau.player.choice] + " and the computer's choice was " + Rochambeau.choiceNames[Rochambeau.computer.choice] + ".";
+        if (result == "win") {
+            document.getElementById("result").textContent = message + " YOU WIN! " + messagetwo;
+            document.getElementById("result").className = "alert alert-success";
+        } else if (result == "lose") {
+            document.getElementById("result").textContent = message + " YOU LOSE! " + messagetwo;
+            document.getElementById("result").className = "alert alert-danger";
+        } else {
+            document.getElementById("result").textContent = message + " A tie. " + messagetwo;
+            document.getElementById("result").className = "alert alert-info";
+        }
+        Rochambeau.updateScoreBoard();
+        Rochambeau.updateMatchScore();
+    },
+
+    updateMatchScore: function () {
+        if (Rochambeau.score.wins == 2) {
+            ++Rochambeau.matchScore.wins;
+            Rochambeau.score.wins = 0;
+            Rochambeau.score.losses = 0;
+            Rochambeau.score.ties = 0;
+        } else if (Rochambeau.score.losses == 2) {
+            ++Rochambeau.matchScore.losses;
+            Rochambeau.score.wins = 0;
+            Rochambeau.score.losses = 0;
+            Rochambeau.score.ties = 0;
+        }
+    },
+
+    updateScoreBoard: function () {
+        document.getElementById("wins").textContent = Rochambeau.score.wins;
+        document.getElementById("losses").textContent = Rochambeau.score.losses;
+        document.getElementById("ties").textContent = Rochambeau.score.ties;
+        document.getElementById("matchWins").textContent = Rochambeau.matchScore.wins;
+        document.getElementById("matchLosses").textContent = Rochambeau.matchScore.losses;
+    },
 }
 
-// Variable to store the score
-// Stores the score.
-var score = {
-    wins: 0,
-    losses: 0,
-    ties: 0
-};
-
-// Stores the player's choice, then call's the function for storing the computer's choice
-/*function storePlayerChoice(choice) {
-    playerChoice = choice;
-    console.log("My choice = " + choice);
-    storeComputerChoice();
-}
-
-// Generate computer's random choice
-function storeComputerChoice() {
-    computerChoice = Math.floor(Math.random() * 5);
-    console.log("Computer choice = " + computerChoice);
-} */
-
-// Stores the player's choice, then call's the function for storing the computer's choice
-function storePlayerChoice(choice) {
-    player.choice = choice;
-    console.log("My choice = " + player.choice);
-    storeComputerChoice();
-}
-
-// Generate the computer's random choice
-function storeComputerChoice() {
-    // Generate computer's random choice
-    computer.choice = Math.floor(Math.random()*5);
-    console.log("Computer choice = " + computer.choice);
-}
-
-// This is the function for playing the game
-/*function playGame() {
-    if (playerChoice == computerChoice) {
-        updateScore(1);
-        displayGameResult("tie");
-    } else if (playerChoice == 0 && (computerChoice == 2 || computerChoice == 4)) {
-        updateScore(0);
-        displayGameResult("win");
-    } else if (playerChoice == 1 && (computerChoice == 0 || computerChoice == 3)) {
-        updateScore(0);
-        displayGameResult("win");
-    } else if (playerChoice == 2 && (computerChoice == 1 || computerChoice == 4)) {
-        updateScore(0);
-        displayGameResult("win");
-    } else if (playerChoice == 3 && (computerChoice == 2 || computerChoice == 4)) {
-        updateScore(0);
-        displayGameResult("win");
-    } else if (playerChoice == 4 && (computerChoice == 3 || computerChoice == 0)) {
-        updateScore(0);
-        displayGameResult("win");
-    } else {
-        updateScore(2);
-        displayGameResult("lose");
-
-    }*/
-
-// This is the function for playing the game
-function playGame(){
-    // Here is the game ruleset algorithm
-    if (playerChoice == computerChoice) {
-        // We have a tie!
-        ++score.ties;
-        displayGameResult("tie")
-    } else if (choices.ROCK && (computerChoice == choices.SCISSORS || computerChoice == choices.toString)) {
-        // Rock beats scissors - a win!
-        ++score.wins;
-        displayGameResult("win")
-    } else if (playerChoice == choices.PAPER && (computerChoice == choices.ROCK || computerChoice == choices.LIZARD)) {
-        // Paper beats rock - a win!
-        ++score.wins;
-        displayGameResult("win")
-    } else if (playerChoice == choices.SCISSORS && (computerChoice == choices.PAPER || computerChoice == choices.SPOCK)) {
-        // Scissors beats paper - a win!
-        ++score.wins;
-        displayGameResult("win")
-    } else if (playerChoice == choices.LIZARD && (computerChoice == choices.SCISSORS || computerChoice == choices.SPOCK)) {
-        // Scissors beats paper - a win!
-        ++score.wins;
-        displayGameResult("win")
-    }else if (playerChoice == choices.SPOCK && (computerChoice == choices.LIZARD || computerChoice == choices.ROCK)) {
-        // Scissors beats paper - a win!
-        ++score.wins;
-        displayGameResult("win")
-    } else {
-        // All other combinations are losses
-        ++score.losses;
-        displayGameResult("lose")
-    }
-}
-
-
-if (score[0] == 2) {
-    updateMatch(0);
-    score = [0, 0, 0];
-} else if (score[2] == 2) {
-    updateMatch(1);
-    score = [0, 0, 0];
-}
-
-
-//Displays the result of the game
-function displayGameResult(result) {
-    // Define an array of text labels for the choices 0, 1, 2;
-    // Create a message for the player
-    var message = "Your choice was " + choices[playerChoice] + " and the computer's choice was " + choices[computerChoice] + ".";
-    // Add to the base message if it was a win, loss, or tie
-    if (result === "win") {
-        // Display that it was a win
-        document.getElementById("result").textContent = message + " YOU WIN!";
-        document.getElementById("result").className = "alert alert-success";
-    } else if (result === "lose") {
-        // Display that it was a loss
-        document.getElementById("result").textContent = message + " YOU LOSE!";
-        document.getElementById("result").className = "alert alert-danger";
-    } else {
-        // Display that it was a tie
-        document.getElementById("result").textContent = message + " A tie.";
-        document.getElementById("result").className = "alert alert-info";
-    }
-
-    updateScoreBoard();
-}
-
-// Updates the score
-function updateScore(val) {
-    ++score[val];
-    console.log("The score is now " + score);
-}
-
-
-function updateMatch(a) {
-    ++matches[a];
-    console.log("The Match score is now " + matches)
-}
-
-// Function for displaying the score
-function displayScoreBoard(winsId, lossesId, tiesId, matchwinsId, matchlossesId){
-    document.getElementById(winsId).textContent = score.wins;
-    document.getElementById(lossesId).textContent = score.losses;
-    document.getElementById(tiesId).textContent = score.ties;
-
-    document.getElementById(matchwinsId).textContent = score.matchwins;
-    document.getElementById(matchlossesId).textContent = score.matchlosses;
-}
-
-
-// Function for displaying the score
-/*function updateScoreBoard() {
-    document.getElementById("wins").textContent = score[0];
-    document.getElementById("losses").textContent = score[2];
-    document.getElementById("ties").textContent = score[1];
-
-    document.getElementById("matchwins").textContent = matches[0];
-    document.getElementById("matchlosses").textContent = matches[1];
-} */
-
-
-// The button elements
-var rockButton = document.getElementById("rock");
-var paperButton = document.getElementById("paper");
-var scissorsButton = document.getElementById("scissors");
-var lizardButton = document.getElementById("lizard");
-var spockButton = document.getElementById("spock");
-var playButton = document.getElementById("play");
-
-// Add the event handlers
-rockButton.addEventListener('click', () => {
-    storePlayerChoice(0)
+Rochambeau.rockButton.addEventListener('click', () => {
+    Rochambeau.storePlayerChoice(0);
+    Rochambeau.playButton.disabled = false;
 });
-paperButton.addEventListener('click', () => {
-    storePlayerChoice(1)
-});
-scissorsButton.addEventListener('click', () => {
-    storePlayerChoice(2)
-});
-lizardButton.addEventListener('click', () => {
-    storePlayerChoice(3)
-});
-spockButton.addEventListener('click', () => {
-    storePlayerChoice(4)
-});
-playButton.addEventListener('click', () => {
-    playGame()
-});
+Rochambeau.paperButton.addEventListener('click', () => {
+    Rochambeau.storePlayerChoice(1);
+    Rochambeau.playButton.disabled = false;
 
+});
+Rochambeau.scissorsButton.addEventListener('click', () => {
+    Rochambeau.storePlayerChoice(2);
+    Rochambeau.playButton.disabled = false;
+
+});
+Rochambeau.lizardButton.addEventListener('click', () => {
+    Rochambeau.storePlayerChoice(3);
+    Rochambeau.playButton.disabled = false;
+
+});
+Rochambeau.spockButton.addEventListener('click', () => {
+    Rochambeau.storePlayerChoice(4);
+    Rochambeau.playButton.disabled = false;
+
+});
+Rochambeau.playButton.addEventListener('click', () => {
+    Rochambeau.storeComputerChoice();
+    Rochambeau.playGame();
+    Rochambeau.playButton.disabled = true;
+
+});
