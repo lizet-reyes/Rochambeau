@@ -1,15 +1,34 @@
-var playerChoice;
-var computerChoice;
+/**
+ * Represents a player
+ */
+function Player(){
+    this.choice = null;
+}
 
-var choices = ["Rock", "Paper", "Scissors", "Lizard", "Spock"];
+var player = new Player();
+var computer = new Player();
+
+/**
+ * Represents the choices
+ */
+var choices  = {
+    ROCK: 0,
+    PAPER: 1,
+    SCISSORS: 2,
+    LIZARD: 3,
+    SPOCK: 4
+}
 
 // Variable to store the score
-// score[0] = wins, score[1] = ties, score[2] = losses
-var score = [0, 0, 0];
-var matches = [0, 0];
+// Stores the score.
+var score = {
+    wins: 0,
+    losses: 0,
+    ties: 0
+};
 
 // Stores the player's choice, then call's the function for storing the computer's choice
-function storePlayerChoice(choice) {
+/*function storePlayerChoice(choice) {
     playerChoice = choice;
     console.log("My choice = " + choice);
     storeComputerChoice();
@@ -19,10 +38,24 @@ function storePlayerChoice(choice) {
 function storeComputerChoice() {
     computerChoice = Math.floor(Math.random() * 5);
     console.log("Computer choice = " + computerChoice);
+} */
+
+// Stores the player's choice, then call's the function for storing the computer's choice
+function storePlayerChoice(choice) {
+    player.choice = choice;
+    console.log("My choice = " + player.choice);
+    storeComputerChoice();
+}
+
+// Generate the computer's random choice
+function storeComputerChoice() {
+    // Generate computer's random choice
+    computer.choice = Math.floor(Math.random()*5);
+    console.log("Computer choice = " + computer.choice);
 }
 
 // This is the function for playing the game
-function playGame() {
+/*function playGame() {
     if (playerChoice == computerChoice) {
         updateScore(1);
         displayGameResult("tie");
@@ -45,8 +78,41 @@ function playGame() {
         updateScore(2);
         displayGameResult("lose");
 
-    }
+    }*/
 
+// This is the function for playing the game
+function playGame(){
+    // Here is the game ruleset algorithm
+    if (playerChoice == computerChoice) {
+        // We have a tie!
+        ++score.ties;
+        displayGameResult("tie")
+    } else if (choices.ROCK && (computerChoice == choices.SCISSORS || computerChoice == choices.toString)) {
+        // Rock beats scissors - a win!
+        ++score.wins;
+        displayGameResult("win")
+    } else if (playerChoice == choices.PAPER && (computerChoice == choices.ROCK || computerChoice == choices.LIZARD)) {
+        // Paper beats rock - a win!
+        ++score.wins;
+        displayGameResult("win")
+    } else if (playerChoice == choices.SCISSORS && (computerChoice == choices.PAPER || computerChoice == choices.SPOCK)) {
+        // Scissors beats paper - a win!
+        ++score.wins;
+        displayGameResult("win")
+    } else if (playerChoice == choices.LIZARD && (computerChoice == choices.SCISSORS || computerChoice == choices.SPOCK)) {
+        // Scissors beats paper - a win!
+        ++score.wins;
+        displayGameResult("win")
+    }else if (playerChoice == choices.SPOCK && (computerChoice == choices.LIZARD || computerChoice == choices.ROCK)) {
+        // Scissors beats paper - a win!
+        ++score.wins;
+        displayGameResult("win")
+    } else {
+        // All other combinations are losses
+        ++score.losses;
+        displayGameResult("lose")
+    }
+}
 
 
 if (score[0] == 2) {
@@ -57,7 +123,7 @@ if (score[0] == 2) {
     score = [0, 0, 0];
 }
 
-}
+
 //Displays the result of the game
 function displayGameResult(result) {
     // Define an array of text labels for the choices 0, 1, 2;
@@ -93,18 +159,26 @@ function updateMatch(a) {
     console.log("The Match score is now " + matches)
 }
 
+// Function for displaying the score
+function displayScoreBoard(winsId, lossesId, tiesId, matchwinsId, matchlossesId){
+    document.getElementById(winsId).textContent = score.wins;
+    document.getElementById(lossesId).textContent = score.losses;
+    document.getElementById(tiesId).textContent = score.ties;
 
+    document.getElementById(matchwinsId).textContent = score.matchwins;
+    document.getElementById(matchlossesId).textContent = score.matchlosses;
+}
 
 
 // Function for displaying the score
-function updateScoreBoard() {
+/*function updateScoreBoard() {
     document.getElementById("wins").textContent = score[0];
     document.getElementById("losses").textContent = score[2];
     document.getElementById("ties").textContent = score[1];
 
     document.getElementById("matchwins").textContent = matches[0];
     document.getElementById("matchlosses").textContent = matches[1];
-}
+} */
 
 
 // The button elements
